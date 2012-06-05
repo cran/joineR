@@ -1,7 +1,7 @@
-4e8d6ac66d7bda05088f9222f5680fe8 *DESCRIPTION
+671a128f2d9b5672898b8f0582327253 *DESCRIPTION
 b48e087e41fab70ac103d67168254bef *NAMESPACE
 914d4fa0dde24d131c8e7e5067dad851 *R/UniqueVariables.R
-40e15cc334c9d8e3e2343f429a2cc402 *R/joint.R
+30e23f4e8a4b2ab145cc4780bb93897e *R/joint.R
 cf6590198fde88a4504ddec60efbb101 *R/jointSE.R
 be5a6f5ddb111abda30076410fb93447 *R/jointdata.R
 ee3a50668af60484fa7179187dd5139c *R/jointplot.R
@@ -21,7 +21,7 @@ a9f2b20754cccffda68cf38139888077 *data/epileptic.txt.gz
 42cdb138bf12e8cf045d1a9c2af0a557 *data/liver.txt.gz
 a78ea8c59f06f1a35312ecb56f86ce49 *data/mental.txt.gz
 5e8d482e0eb97094c1fd13fc78e77d1c *inst/doc/joineR.Rnw
-36fbbd383a9b2e9464c460064ccd8512 *inst/doc/joineR.pdf
+fa98d1283017f4caa7cfe2052a6095a1 *inst/doc/joineR.pdf
 a4ad9a64f4dc66271c46545215e88cb0 *man/UniqueVariables.Rd
 ce4bd217a2236c886fcb3a9442708a82 *man/epileptic.Rd
 6e984c36a819d6f4f13258e20402786c *man/heart.valve.Rd

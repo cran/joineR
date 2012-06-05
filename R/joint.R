@@ -15,7 +15,7 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
         tol <- 0.001
     }
     Call <- match.call()
-    long.data <- merge(data$longitudinal, data$baseline, by = id) 
+    long.data <- merge(data$longitudinal, data$baseline, by = id, sort = FALSE) 
     long.frame <- model.frame(long.formula, data = long.data)
     long.cov <- model.matrix(long.formula, long.frame)
     long.terms <- terms(long.formula, data = long.data)
@@ -475,13 +475,11 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
         list(log.like = ll, longlog.like = l1, survlog.like = ll - l1)
     }
     sort.dat <- function(longdat, survdat) {
-        sort.long <- matrix(0, dim(longdat)[1], dim(longdat)[2])
-        id <- longdat[, 1]
-        nn <- diff(match(unique(id), id))
-        nn[length(nn) + 1] <- length(id) - sum(nn)
-        id <- rep(survdat[, 2], nn)
-        sort.long <- longdat[order(id), ]
-        sort.surv <- matrix(0, dim(survdat)[1], dim(survdat)[2])
+        longid <- longdat[, 1]
+        nn <- diff(match(unique(longid), longid))
+        nn[length(nn) + 1] <- length(longid) - sum(nn)
+        svec <- rep(survdat[, 2], nn)
+        sort.long <- longdat[order(svec), ]
         os <- order(survdat[,2])
         sort.surv <- survdat[os,]
         list(long.s = data.frame(sort.long), surv.s = data.frame(sort.surv))
