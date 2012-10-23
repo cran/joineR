@@ -2,7 +2,7 @@ summary.joint <- function (object, variance = TRUE, ...) {
 cat("Random effects joint model\n")
 model <- object$model
 cat(" Data:", deparse( object$call$data ), "\n")
-cat(" Log-likelihood:", object$loglik$jointlhood,"\n")
+cat(" Log-likelihood:", object$loglik$jointlhood, "\n")
 cat("\n")
 cat("Longitudinal sub-model fixed effects:",deparse(object$formulae$lformula))
 lfixed <- object$coefficients$fixed$longitudinal
@@ -11,8 +11,13 @@ print(lfixed)
 cat("\n")
 cat("Survival sub-model fixed effects:",deparse(object$formulae$sformula))
 sfixed <- data.frame(object$coefficients$fixed$survival)
+if (sum(dim(sfixed)) == 0) {
+cat("\n", "No survival baseline covariates specified", "\n")
+}
+else {
 names(sfixed) <- ""
 print(sfixed)
+}
 cat("\n")
 cat("Latent association:")
 lat <- data.frame(object$coefficients$latent)

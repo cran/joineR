@@ -54,8 +54,8 @@ for (i in 1:n.boot) {
     b5 <- as.numeric(as.vector(as.matrix(fitb$sigma.z)))
     if (dim(surv.frame)[2] != 1) { 
         b2 <- as.numeric(as.vector(as.matrix(fitb$coefficients$fixed$survival)))
-        out[i,] <- c(b1, b2, b3, b4, b5)
-        ests <- out[i,]
+        out[i, ] <- c(b1, b2, b3, b4, b5)
+        ests <- out[i, ]
         if (print.detail) { 
             detail <- data.frame(iteration = i, t(ests))
             names(detail) <- c("Iteration", paranames)
@@ -63,8 +63,8 @@ for (i in 1:n.boot) {
         }
     } 
     else {
-        out[i,] <- c(b1, b3, b4, b5)
-        ests <- out[i,]
+        out[i, ] <- c(b1, b3, b4, b5)
+        ests <- out[i, ]
         if (print.detail) {
             detail <- data.frame(iteration = i, t(ests))
             names(detail) <- c("Iteration", paranames)
@@ -78,10 +78,11 @@ for (i in 1:n.boot) {
     se <- 0
     ci1 <- 0
     ci2 <- 0
+    if (n.boot == 1) {out <- matrix(out, nrow = 1)}
     for (i in 1:length(out[1, ])) {
         se[i] <- sqrt(var(as.numeric(out[, i])))
         if (n.boot < 100) {
-            ci1[i] <- 0
+       	    ci1[i] <- 0
             ci2[i] <- 0
         }
         else {
@@ -95,15 +96,15 @@ round(c(as.numeric(as.vector(as.matrix(fitted$coefficients$fixed$longitudinal)))
 as.numeric(as.vector(as.matrix(fitted$coefficients$fixed$survival))),
 as.numeric(as.vector(as.matrix(fitted$coefficients$latent))),
 as.numeric(as.vector(as.matrix(diag(fitted$sigma.u)))),
-as.numeric(as.vector(as.matrix(fitted$sigma.z)))),4),
-round(cbind(se),4), round(ci1,4), round(ci2,4)))
+as.numeric(as.vector(as.matrix(fitted$sigma.z)))), 4),
+round(cbind(se), 4), round(ci1, 4), round(ci2, 4)))
 } else {
 b1 <- data.frame(cbind(compnames, paranames,
-round(c(as.numeric(as.vector(as.matrix(fitted$oefficients$fixed$longitudinal))),
+round(c(as.numeric(as.vector(as.matrix(fitted$coefficients$fixed$longitudinal))),
 as.numeric(as.vector(as.matrix(fitted$coefficients$latent))),
 as.numeric(as.vector(as.matrix(fitted$sigma.z))),
 as.numeric(as.vector(as.matrix(diag(fitted$sigma.u))))), 4),
-round(cbind(se),4), round(ci1,4), round(ci2,4)))
+round(cbind(se), 4), round(ci1, 4), round(ci2, 4)))
 }
     names(b1)[1:6] <- c("Component", "Parameter", "Estimate", "SE", "95%Lower", "95%Upper")
     b1

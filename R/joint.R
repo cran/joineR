@@ -1,4 +1,6 @@
-joint <- function (data, long.formula, surv.formula, model = c("intslope", "int", "quad"), sepassoc = FALSE, longsep = FALSE, survsep = FALSE, gpt, lgpt, max.it, tol) 
+joint <- function (data, long.formula, surv.formula, model = c("intslope", 
+    "int", "quad"), sepassoc = FALSE, longsep = FALSE, survsep = FALSE, 
+    gpt, lgpt, max.it, tol) 
 {
     id <- data$subj.col
     time.long <- data$time.col
@@ -15,33 +17,44 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
         tol <- 0.001
     }
     Call <- match.call()
-    long.data <- merge(data$longitudinal, data$baseline, by = id, sort = FALSE) 
+    if (any(sapply(data$baseline, "class") == "factor")) {
+    data$baseline <- drop.levels(data$baseline)
+    }
+    long.data <- merge(data$longitudinal, data$baseline, by = id, 
+        sort = FALSE)
     long.frame <- model.frame(long.formula, data = long.data)
     long.cov <- model.matrix(long.formula, long.frame)
     long.terms <- terms(long.formula, data = long.data)
-    long.names <- attr(long.terms, "term.labels")
-    if (attr(long.terms, "intercept") == 1) {
-        long.names <- c("(Intercept)", long.names)
-    }
+    long.names <- colnames(long.cov)
     rll <- !is.na(data$longitudinal[[names(long.frame[1])]])
-    longdat <- cbind(data$longitudinal[[id]][rll], long.frame[, 1], data$longitudinal[[time.long]][rll], 
-        long.cov)
+    longdat <- cbind(data$longitudinal[[id]][rll], long.frame[, 
+        1], data$longitudinal[[time.long]][rll], long.cov)
     longdat <- as.data.frame(longdat)
-    names(longdat) <- c(id, names(long.frame)[1], time.long, long.names)
-    surv.frame <- model.frame(surv.formula, data = cbind(data$survival, data$baseline))
+    names(longdat) <- c(id, names(long.frame)[1], time.long, 
+        long.names)
+    surv.frame <- model.frame(surv.formula, data = cbind(data$survival, 
+        data$baseline))
     srv <- model.extract(surv.frame, "response")
-    surv.terms <- terms(surv.formula, data = cbind(data$survival, data$baseline))
+    surv.terms <- terms(surv.formula, data = cbind(data$survival, 
+        data$baseline))
     attr(surv.terms, "intercept") <- 1
-    surv.cov <- model.matrix(surv.terms, data = cbind(data$survival, data$baseline))
-    surv.cov <- as.matrix(surv.cov[,-1])
+    surv.cov <- model.matrix(surv.terms, data = cbind(data$survival, 
+        data$baseline))
+    surv.cov <- as.matrix(surv.cov[, -1])
     rss <- as.integer(row.names(surv.cov))
-    survdat <- cbind(data$survival[[id]][rss], srv[rss, 1], srv[rss, 2], 
-    surv.cov[rss,])
+    survdat <- cbind(data$survival[[id]][rss], srv[rss, 1], srv[rss, 
+        2], surv.cov[rss, ])
     survdat <- as.data.frame(survdat)
-    names(survdat) <- c(id, surv.formula[2][[1]][[2]], surv.formula[2][[1]][[3]], attr(surv.terms, "term.labels"))
+    names(survdat) <- c(id, surv.formula[2][[1]][[2]], surv.formula[2][[1]][[3]], 
+	   colnames(surv.cov))    
     if (dim(survdat)[2] > 3) {
-        survdat[, 4 : dim(survdat)[2]] <- scale(survdat[, 4 : dim(survdat)[2]], scale = FALSE)
+        survdat[, 4:dim(survdat)[2]] <- scale(survdat[, 4:dim(survdat)[2]], 
+            scale = FALSE)
     }
+    survdat2 <- data.frame(data$survival[[id]][rss], srv[rss, 1], srv[rss, 
+        2], surv.frame[, -1])
+    names(survdat2) <- c(id, surv.formula[2][[1]][[2]], surv.formula[2][[1]][[3]], 
+          attr(surv.terms, "term.labels"))
     model <- match.arg(model)
     if (model != "intslope" && model != "int" && model != "quad") {
         stop(paste("Unknown model", model))
@@ -63,62 +76,74 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
         }
         ests
     }
-    longst <- function(longdat, long.formula, model) {
-	if (model == "int") {
-        rf <- as.formula(paste("~1", colnames(longdat)[1], sep = "|"))
-        long.start <- lme(long.formula, random = rf, method = "ML", data = data.frame(longdat))
+    longst <- function(longdat, long.formula, model, longdat2) {
+        if (model == "int") {
+            rf <- as.formula(paste("~1", colnames(longdat)[1], 
+                sep = "|"))
+            long.start <- lme(long.formula, random = rf, method = "ML", 
+                data = data.frame(longdat2), na.action = na.omit)
         }
-	else if (model == "intslope") {
-        rf <- as.formula(paste(paste("~", colnames(longdat)[3], sep = ""), colnames(longdat)[1], sep = "|"))
-        long.start <- lme(long.formula, random = rf, method = "ML", data = data.frame(longdat))
+        else if (model == "intslope") {
+            rf <- as.formula(paste(paste("~", colnames(longdat)[3], 
+                sep = ""), colnames(longdat)[1], sep = "|"))
+            long.start <- lme(long.formula, random = rf, method = "ML", 
+                data = data.frame(longdat2), na.action = na.omit)
         }
-	else {
-	tsq <- paste(paste("I(",paste(colnames(longdat)[3],"^2", sep = ""),sep = ""),")",sep="")	
-	rf <- as.formula(paste(paste("~", paste(colnames(longdat)[3], tsq, sep = "+"), sep = ""), colnames(longdat)[1], sep = "|"))
-        long.start <- lme(long.formula, random = rf, method = "ML", data = data.frame(longdat))
+        else {
+            tsq <- paste(paste("I(", paste(colnames(longdat)[3], 
+                "^2", sep = ""), sep = ""), ")", sep = "")
+            rf <- as.formula(paste(paste("~", paste(colnames(longdat)[3], 
+                tsq, sep = "+"), sep = ""), colnames(longdat)[1], 
+                sep = "|"))
+            long.start <- lme(long.formula, random = rf, method = "ML", 
+                data = data.frame(longdat2), na.action = na.omit)
         }
-        q <- dim(VarCorr(long.start))[1]-1
-        sigma.u <- diag(as.double(VarCorr(long.start)[1:q, 1]), q, q)
-        if (q > 1){
-	      vv <- tcrossprod(diag(sqrt(sigma.u)))*lower.tri(sigma.u)
-	      rho <- as.double(VarCorr(long.start, rdig=8)[-c(1, q+1), -(1:2)])
-	      rho <- rho[!is.na(rho)]
-	      vars <- diag(sigma.u)
-	      sigma.u[lower.tri(sigma.u)] <- vv[lower.tri(vv)]*rho
-	      sigma.u <- sigma.u + t(sigma.u) - diag(vars) 
-            }
+        q <- dim(VarCorr(long.start))[1] - 1
+        sigma.u <- diag(as.double(VarCorr(long.start)[1:q, 1]), 
+            q, q)
+        if (q > 1) {
+            vv <- tcrossprod(diag(sqrt(sigma.u))) * lower.tri(sigma.u)
+            rho <- as.double(VarCorr(long.start, rdig = 8)[-c(1, 
+                q + 1), -(1:2)])
+            rho <- rho[!is.na(rho)]
+            vars <- diag(sigma.u)
+            sigma.u[lower.tri(sigma.u)] <- vv[lower.tri(vv)] * 
+                rho
+            sigma.u <- sigma.u + t(sigma.u) - diag(vars)
+        }
         rownames(sigma.u) <- paste("U_", 0:(q - 1), sep = "")
         colnames(sigma.u) <- paste("U_", 0:(q - 1), sep = "")
         sigma.z <- long.start$sigma^2
         ll <- long.start$logLik
         b1 <- fixef(long.start)
-        list(b1 = data.frame(b1), sigma.z = sigma.z, sigma.u = sigma.u, log.like = ll)
+        list(b1 = data.frame(b1), sigma.z = sigma.z, sigma.u = sigma.u, 
+            log.like = ll)
     }
-    survst <- function(survdat, surv.formula) {
+    survst <- function(survdat, surv.formula, survdat2) {
+	survdat2 <- survdat2[order(survdat2[, 2]), ]
         n <- length(survdat[, 2])
         s <- survdat[, 2]
         cen <- survdat[, 3]
-# This assumes first time is a failure
         cen[1] <- 1
         survdat[1, 3] <- 1
+        survdat2[1, 3] <- 1
         p2 <- dim(survdat)[2] - 3
-	dsurvdat <- data.frame(survdat)
-        surv.start <- coxph(surv.formula, data = dsurvdat, x = TRUE)
+        surv.start <- coxph(surv.formula, data = survdat2, x = TRUE)
         surv.start.f <- survfit(surv.start)
-	sf <- surv.start.f$time[surv.start.f$n.event != 0]
+        sf <- surv.start.f$time[surv.start.f$n.event != 0]
         nf <- length(sf)
         nev <- surv.start.f$n.event[surv.start.f$n.event != 0]
-	if (p2 > 0) {
-	     haz <- coxph.detail(surv.start)$hazard	  
-	}
-	else { 
-	     haz <- surv.start.f$n.event / surv.start.f$n.risk
-             haz <- haz[surv.start.f$n.event > 0]
+        if (p2 > 0) {
+            haz <- coxph.detail(surv.start)$hazard
+        }
+        else {
+            haz <- surv.start.f$n.event/surv.start.f$n.risk
+            haz <- haz[surv.start.f$n.event > 0]
         }
         rs <- rep(1:nf, c(diff(match(sf, s)), n + 1 - match(sf, 
             s)[nf]))
-        if(cen[1] == 0) {
-             rs <- c(0,rs)
+        if (cen[1] == 0) {
+            rs <- c(0, rs)
         }
         b2 <- coef(surv.start)
         ll <- surv.start$loglik - sum(cen)
@@ -191,7 +216,7 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
         cnn <- c(0, cumsum(nn))
         Inn <- diag(max(nn))
         conv <- FALSE
-        for (it in 1:max.it) {
+        for (it in 1 : max.it) {
             if (p2 > 0) {
                 b2x <- X2 %*% b2[1:p2]
             }
@@ -241,8 +266,8 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
                 }
                 egDUs <- 1
                 if (cen[i] == 1) {
-                  egDUs <- exp(newu %*% (Dst[i, ] * b2[(p2 + 1):(p2 + 
-                    lat)]))
+                  egDUs <- exp(newu %*% (Dst[i, ] * b2[(p2 + 
+                    1):(p2 + lat)]))
                 }
                 egDUsf <- exp(newu %*% (Dsf[, 1:rs[i]] * b2[(p2 + 
                   1):(p2 + lat)]))
@@ -340,8 +365,8 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
                       1):(p2 + ran)])
                   }
                   else {
-                    sd[1:p2, p2 + 1] <- sum(sd[(1:p2), (p2 + 1):(p2 + 
-                      ran)])
+                    sd[1:p2, p2 + 1] <- sum(sd[(1:p2), (p2 + 
+                      1):(p2 + ran)])
                   }
                   sd[p2 + 1, 1:p2] <- sd[1:p2, p2 + 1]
                   sd[p2 + 1, p2 + 1] <- sum(sd[(p2 + 1):(p2 + 
@@ -361,7 +386,8 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
             print("Not converged")
         }
         list(b1 = data.frame(b1), b2 = data.frame(b2), sigma.z = sigma.z, 
-            sigma.u = sigma.u, haz = haz, random = EU, conv = conv, iters = it)
+            sigma.u = sigma.u, haz = haz, random = EU, conv = conv, 
+            iters = it)
     }
     getD <- function(q, arg) {
         D <- matrix(0, q, length(arg))
@@ -429,7 +455,8 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
             W21 <- cov[, (cnn[i] + 1):cnn[i + 1]]
             W12 <- tcov[(cnn[i] + 1):cnn[i + 1], ]
             if (model == "int") {
-                W11 <- tcrossprod(ttv, W21) + sigma.zi[1:nn[i], 1:nn[i]]
+                W11 <- tcrossprod(ttv, W21) + sigma.zi[1:nn[i], 
+                  1:nn[i]]
             }
             else {
                 W11 <- ttv %*% W21 + sigma.zi[1:nn[i], 1:nn[i]]
@@ -472,7 +499,8 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
                 0.5 * sum(rv * solve(W11, rv))
         }
         ll <- l1 + l2 - 0.5 * ran * n * log(pi)
-        list(log.like = ll, longlog.like = l1, survlog.like = ll - l1)
+        list(log.like = ll, longlog.like = l1, survlog.like = ll - 
+            l1)
     }
     sort.dat <- function(longdat, survdat) {
         longid <- longdat[, 1]
@@ -480,18 +508,19 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
         nn[length(nn) + 1] <- length(longid) - sum(nn)
         svec <- rep(survdat[, 2], nn)
         sort.long <- longdat[order(svec), ]
-        os <- order(survdat[,2])
-        sort.surv <- survdat[os,]
+        os <- order(survdat[, 2])
+        sort.surv <- survdat[os, ]
         list(long.s = data.frame(sort.long), surv.s = data.frame(sort.surv))
     }
     sort <- sort.dat(longdat, survdat)
     longdat <- as.matrix(sort$long.s)
     survdat <- as.matrix(sort$surv.s)
     p2 <- dim(survdat)[2] - 3
-    ldaests <- longst(longdat, long.formula, model = model)
-    survests <- survst(survdat, surv.formula)
+    ldaests <- longst(longdat, long.formula, model = model, long.data)
+    survests <- survst(survdat, surv.formula, survdat2)
     sep.ll <- ldaests$log.like + survests$log.like[2]
-    sep.loglik <- list(seplhood = sep.ll, sepy = ldaests$log.like, sepn = survests$log.like[2])
+    sep.loglik <- list(seplhood = sep.ll, sepy = ldaests$log.like, 
+        sepn = survests$log.like[2])
     paraests <- c(ldaests, survests)
     jointfit <- em.alg(longdat, survdat, ran, paraests, gpt, 
         max.it, tol)
@@ -511,15 +540,19 @@ joint <- function (data, long.formula, surv.formula, model = c("intslope", "int"
     names(latent) <- paste("gamma_", 0:(lat - 1), sep = "")
     random <- jointfit$random
     colnames(random) <- paste("U_", 0:(ran - 1), sep = "")
-    rownames(random) <- survdat[,1]
+    rownames(random) <- survdat[, 1]
     coefficients <- list(fixed = fixed, random = random, latent = latent)
     jointll <- jlike(longdat, survdat, ran, likeests, lgpt)
-    loglik <- list(jointlhood = jointll$log.like, jointy = jointll$longlog.like, jointn = jointll$survlog.like)
-    sepests <- list(longests = sep(ldaests, longsep), survests = sep(survests, survsep))
-    results <- list(coefficients = coefficients, sigma.z = jointfit$sigma.z, sigma.u = jointfit$sigma.u, 
-        hazard = jointfit$haz, loglik = loglik, numIter = jointfit$iters, convergence = jointfit$conv, 
-        model = model, sepassoc = sepassoc, sepests = sepests, sep.loglik = sep.loglik,
-        formulae = list(lformula = long.formula, sformula = surv.formula), data = data, call = Call)
+    loglik <- list(jointlhood = jointll$log.like, jointy = jointll$longlog.like, 
+        jointn = jointll$survlog.like)
+    sepests <- list(longests = sep(ldaests, longsep), survests = sep(survests, 
+        survsep))
+    results <- list(coefficients = coefficients, sigma.z = jointfit$sigma.z, 
+        sigma.u = jointfit$sigma.u, hazard = jointfit$haz, loglik = loglik, 
+        numIter = jointfit$iters, convergence = jointfit$conv, 
+        model = model, sepassoc = sepassoc, sepests = sepests, 
+        sep.loglik = sep.loglik, formulae = list(lformula = long.formula, 
+            sformula = surv.formula), data = data, call = Call)
     class(results) <- "joint"
     results
 }

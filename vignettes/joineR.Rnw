@@ -293,6 +293,12 @@ dim(epileptic.balanced)
 sum(is.na(epileptic.balanced))
 @
 
+Once a data-set is in the balanced format (if it is unbalanced then {\tt to.balanced} can be applied) then the mean, variance and correlation matrix of the responses can be extracted using {\tt summarybal}. An example is given below using the mental data-set:
+
+<<>>=
+summarybal(mental, Y.col = 2:7, times = c(0, 1, 2, 4, 6, 8), na.rm = TRUE)
+@
+
 \section{Creating a {\tt jointdata} object}
  A {\tt jointdata} object is a list consisting of up to three data-frames, which
 collectively contain
@@ -595,8 +601,8 @@ mental.jd <- jointdata(mental.long, mental.surv, mental.baseline, id.col = "id",
 @
 
 The following command then fits the model. Note that in the function call, the \verb#Y ~ 1#
-and \verb#Surv(surv.time, cens.ind) ~ treat# refer to the {\it names} of columns in the relevant
-data-frames.
+and \\
+\verb#Surv(surv.time, cens.ind) ~ treat# refer to the {\it names} of columns in the relevant data-frames.
 
 <<>>=
 model.jointrandom <- joint(mental.jd, Y ~ 1 + time + treat, 

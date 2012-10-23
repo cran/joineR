@@ -13,7 +13,7 @@ building on the formulation
 }
 \usage{
 joint(data, long.formula, surv.formula, 
-      model=c("intslope", "int", "quad"), 
+      model = c("intslope", "int", "quad"), 
       sepassoc = FALSE, longsep = FALSE, survsep = FALSE, 
       gpt, lgpt, max.it, tol)
 }
@@ -28,12 +28,12 @@ joint(data, long.formula, surv.formula,
   \item{model}{a character string specifying the type of latent
     association. This defaults to the intercept and slope version as
     seen in Wulfsohn and Tsiatis. For association via the random
-    intercept only, choose \code{model="int"}, whereas for a quadratic
-    association, use \code{model="quad"}. Computing times are commensurate with
+    intercept only, choose \code{model = "int"}, whereas for a quadratic
+    association, use \code{model = "quad"}. Computing times are commensurate with
     the type of association structure chosen.}
-  \item{sepassoc}{if \code{TRUE} then the joint model is fitted with
+  \item{sepassoc}{logical value: if \code{TRUE} then the joint model is fitted with
     separate association, see \code{Details}.}
-  \item{longsep}{if \code{TRUE}, parameter estimates and log-likelihood from a
+  \item{longsep}{logical value: if \code{TRUE}, parameter estimates and log-likelihood from a
     separate linear mixed model analysis of the longitudinal data (see the \code{lme} function
     in the package \pkg{nlme} for details) are returned.}
   \item{survsep}{if \code{TRUE}, parameter estimates and log-likelihood from a

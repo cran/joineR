@@ -10,11 +10,11 @@ summary.jointdata <- function (object, ...)
     }
     else {
         out[[2]] <- as.data.frame(matrix(0, ncol = 1, nrow = dim(object$longitudinal)[2] - 
-            2))
+            1))
         names(out[[2]]) <- c("class")
-        row.names(out[[2]]) <- names(object$longitudinal)[3:(dim(object$longitudinal)[2])]
-        for (j in 3:(dim(object$longitudinal)[2])) {
-            out[[2]][j - 2, 1] <- class(object$longitudinal[, 
+        row.names(out[[2]]) <- names(object$longitudinal)[2:(dim(object$longitudinal)[2])]
+        for (j in 2:(dim(object$longitudinal)[2])) {
+            out[[2]][j - 1, 1] <- class(object$longitudinal[, 
                 j])
         }
     }
@@ -30,7 +30,7 @@ summary.jointdata <- function (object, ...)
             " subjects that fail", "; there are ", length(object$subject) - 
                 sum(object$survival[[nn]]), " subjects censored", 
             sep = "")
-   }
+    }
     if (any(is.na(object$baseline)) & !is.data.frame(object$baseline)) {
         out[[4]] <- paste("No baseline covariates data available", 
             sep = "")
@@ -48,9 +48,9 @@ summary.jointdata <- function (object, ...)
         out[[5]] <- paste("No longitudinal data available", sep = "")
     }
     else {
-        tt <- unique(object$longitudinal[[object$time]])
+        tt <- sort(unique(object$longitudinal[[object$time]]))
         if (length(tt) > 20) {
-            out[[5]] <- paste("Unbalanced longitudinal study", 
+            out[[5]] <- paste("Unbalanced longitudinal study or more than twenty observation times", 
                 sep = "")
         }
         else {

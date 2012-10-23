@@ -70,7 +70,7 @@ fit <- joint(heart.valve.jd,
              long.formula = log.lvmi ~ 1 + time + hs, 
              surv.formula = Surv(fuyrs,status) ~ hs, 
              model = "int")
-jointSE(fitted = fit, n.boot = 10)
+jointSE(fitted = fit, n.boot = 1)
 }
 
 \keyword{models}% at least one, from doc/KEYWORDS
