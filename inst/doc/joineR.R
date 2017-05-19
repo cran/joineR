@@ -61,7 +61,7 @@ names(mental.balanced)
 ## ----epileptic_balanced--------------------------------------------------
 epileptic.balanced <- to.balanced(epileptic,
                                   id.col = 1, time.col = 3,
-                                  Y.col = 2, other.col = 4:11)
+                                  Y.col = 2, other.col = 4:12)
 dim(epileptic.balanced)
 sum(is.na(epileptic.balanced))
 

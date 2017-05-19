@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pete Philipson, Ines Sousa, Graeme L. Hickey (edited), Peter J. Diggle" />
 
-<meta name="date" content="2017-02-01" />
+<meta name="date" content="2017-05-19" />
 
 <title>joineR</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">joineR</h1>
 <h4 class="author"><em>Pete Philipson, Ines Sousa, Graeme L. Hickey (edited), Peter J. Diggle</em></h4>
-<h4 class="date"><em>2017-02-01</em></h4>
+<h4 class="date"><em>2017-05-19</em></h4>
 
 
 
@@ -91,9 +91,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="the-heart.valve-data-set" class="section level2">
 <h2>The <code>heart.valve</code> data-set</h2>
 <p>This data-set is derived from a study of heart function after surgery to implant a new heart valve, and is loaded (after installing the package) with the command:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(joineR)</code></pre></div>
-<pre><code>## Loading required package: survival</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(heart.valve)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(joineR)
+<span class="kw">data</span>(heart.valve)</code></pre></div>
 <p>The data refer to 256 patients and are stored in the <em>unbalanced</em> format, which is convenient here because measurement times were unique to each subject. The data are stored as a single <code>R</code> object, <code>heart.valve</code>, which is a data-frame of dimension 988 by 25. The average number of repeated measurements per subject is therefore . As with any unbalanced data-set, values of time-constant variables are repeated over all rows that refer to the same subject. The dimensionality of the dataset can be confirmed by a call to the <code>dim()</code> function, whilst the names of the 25 variables can be listed by a call to the <code>names()</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(heart.valve)</code></pre></div>
 <pre><code>## [1] 988  25</code></pre>
@@ -171,14 +170,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>This data-set is derived from the SANAD (Standard and New Antiepileptic Drugs) study, described in Marson et al. (2007). SANAD was a randomised control trial to compare standard (CBZ) and new (LTG) anti-epileptic drugs with respect to their effects on long-term clinical outcomes. The data are stored in the unbalanced format. The data for each subject consist of repeated measurements of calibrated dose, several baseline covariates and the time to withdrawal from the drug to which they were randomised. The first three rows, all of which relate to the same subject, can be accessed as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(epileptic)
 epileptic[<span class="dv">1</span>:<span class="dv">3</span>, ]</code></pre></div>
-<pre><code>##   id dose time with.time with.status with.status.uae with.status.isc treat
-## 1  1    2   86      2400           0               0               0   CBZ
-## 2  1    2  119      2400           0               0               0   CBZ
-## 3  1    2  268      2400           0               0               0   CBZ
-##     age gender learn.dis
-## 1 75.67      M        No
-## 2 75.67      M        No
-## 3 75.67      M        No</code></pre>
+<pre><code>##   id dose time with.time with.status with.status2 with.status.uae
+## 1  1    2   86      2400           0            0               0
+## 2  1    2  119      2400           0            0               0
+## 3  1    2  268      2400           0            0               0
+##   with.status.isc treat   age gender learn.dis
+## 1               0   CBZ 75.67      M        No
+## 2               0   CBZ 75.67      M        No
+## 3               0   CBZ 75.67      M        No</code></pre>
 </div>
 </div>
 <div id="converting-between-balanced-and-unbalanced-data-formats" class="section level1">
@@ -204,9 +203,9 @@ epileptic[<span class="dv">1</span>:<span class="dv">3</span>, ]</code></pre></d
 <p>Note the automatic renaming of the repeated measures according to their measurement times, also that this function does not check whether storing the object in the balanced format is sensible. For example, conversion of the <code>epileptic</code> data to the balanced format leads to the creation of a large array, most of whose values are missing:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epileptic.balanced &lt;-<span class="st"> </span><span class="kw">to.balanced</span>(epileptic,
                                   <span class="dt">id.col =</span> <span class="dv">1</span>, <span class="dt">time.col =</span> <span class="dv">3</span>,
-                                  <span class="dt">Y.col =</span> <span class="dv">2</span>, <span class="dt">other.col =</span> <span class="dv">4</span>:<span class="dv">11</span>)
+                                  <span class="dt">Y.col =</span> <span class="dv">2</span>, <span class="dt">other.col =</span> <span class="dv">4</span>:<span class="dv">12</span>)
 <span class="kw">dim</span>(epileptic.balanced)</code></pre></div>
-<pre><code>## [1]  605 1005</code></pre>
+<pre><code>## [1]  605 1006</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">is.na</span>(epileptic.balanced))</code></pre></div>
 <pre><code>## [1] 599783</code></pre>
 <p>Once a data-set is in the balanced format (if it is unbalanced then <code>to.balanced</code> can be applied) then the mean, variance and correlation matrix of the responses can be extracted using <code>summarybal</code>. An example is given below using the mental data-set:</p>
@@ -272,7 +271,9 @@ heart.jd &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<span c
 ## ef       integer
 ## 
 ## $survival
-## [1] &quot;There are 54 subjects that fail; there are 202 subjects censored&quot;
+##                                  
+## Number of subjects that fail:  54
+## Number of subjects censored:  202
 ## 
 ## $baseline
 ## [1] &quot;No baseline covariates data available&quot;
@@ -361,14 +362,14 @@ vgm$sigma2</code></pre></div>
 </div>
 <div id="model-fitting" class="section level1">
 <h1>Model-fitting</h1>
-<p>The package includes functions for fitting %two different classes of model %using maximum likelihood estimation. The first is an extended version of the random effects model proposed by Wulfsohn and Tsiatis (1997). See Henderson et al. (2000). The second is the transformation model described by Diggle et al. (2008).</p>
+<p>The package includes functions for fitting two different classes of model using maximum likelihood estimation. The first is an extended version of the random effects model proposed by Wulfsohn and Tsiatis (1997). See Henderson et al. (2000). The second is the transformation model described by Diggle et al. (2008).</p>
 <div id="the-random-effects-model" class="section level2">
 <h2>The random effects model</h2>
-<p>In the extended Wulfsohn and Tsiatis model, both the subject-specific mean response for the repeated measurements and the subject-specific hazard for the time-to-event outcome depend on latent random effect vectors. Hence, if <span class="math inline">\(\lambda_i(t)\)</span> denotes the hazard for subject <span class="math inline">\(i\)</span> and <span class="math inline">\(Y_{ij}\)</span> the <span class="math inline">\(j\)</span>-th repeated measurement on subject <span class="math inline">\(i\)</span>, the model specifies latent vectors <span class="math inline">\(U_i\)</span> and <span class="math inline">\(V_i\)</span> to follow zero-mean multivariate Normal distributions, realized independently for different subjects. Conditional on <span class="math inline">\(U_i\)</span> and <span class="math inline">\(V_i\)</span>, the repeated measurements sub-model is</p>
-<p><span class="math display">\[Y_{ij} = x_{ij} \beta_{ij} + a_{ij}^\top U_i + Z_{ij},\]</span></p>
+<p>In the extended Wulfsohn and Tsiatis model, both the subject-specific mean response for the repeated measurements and the subject-specific hazard for the time-to-event outcome depend on latent random effect vectors. Hence, if <span class="math inline">\(\lambda_i(t)\)</span> denotes the hazard for subject <span class="math inline">\(i\)</span> and <span class="math inline">\(Y_{ij}\)</span> the <span class="math inline">\(j\)</span>-th repeated measurement on subject <span class="math inline">\(i\)</span>, the model specifies latent vectors <span class="math inline">\(U_i\)</span> and <span class="math inline">\(V_i\)</span> to follow zero-mean multivariate normal distributions, realized independently for different subjects. Conditional on <span class="math inline">\(U_i\)</span> and <span class="math inline">\(V_i\)</span>, the repeated measurements sub-model is</p>
+<p><span class="math display">\[Y_{ij} = x_{ij} \beta + a_{ij}^\top U_i + Z_{ij},\]</span></p>
 <p>and the hazard sub-model is</p>
-<p><span class="math display">\[\lambda_i(t) = \lambda_0(t) \exp(w_{ij} \alpha_{ij} + b_{ij}^\top V_i).\]</span></p>
-<p>In the above, the <span class="math inline">\(x_{ij}\)</span>, <span class="math inline">\(w_{ij}\)</span>, <span class="math inline">\(a_{ij}\)</span> and <span class="math inline">\(b_{ij}\)</span> are vectors of explanatory variables that may be time-constant or time-varying, and the <span class="math inline">\(Z_{ij}\)</span> are mutually independent, <span class="math inline">\(Z_{ij} \sim {\rm N}(0,\tau^2)\)</span>. In principle, this is a very flexible model. In practice, the computational cost of evaluating the likelihood restricts routine implementation of the model to low-dimensional <span class="math inline">\(U_i\)</span> and <span class="math inline">\(V_i\)</span>. Wulfsohn and Tsiatis (1997) considered the special case in which the repeated measurements follow the so-called random intercept and slope model with <span class="math inline">\(a_{ij}^\top = (1,t_{ij})\)</span>, whilst the random effects for the repeated measurement and time-to-event sub-models are proportional, hence <span class="math inline">\(b_{ij}^\top V_{i} = \phi a_{ij}^\top U_{i}\)</span>.</p>
+<p><span class="math display">\[\lambda_i(t) = \lambda_0(t) \exp(w_{ij} \alpha + b_{ij}^\top V_i).\]</span></p>
+<p>In the above, the <span class="math inline">\(x_{ij}\)</span>, <span class="math inline">\(w_{ij}\)</span>, <span class="math inline">\(a_{ij}\)</span> and <span class="math inline">\(b_{ij}\)</span> are vectors of explanatory variables that may be time-constant or time-varying, and the <span class="math inline">\(Z_{ij}\)</span> are mutually independent, <span class="math inline">\(Z_{ij} \sim {\rm N}(0, \tau^2)\)</span>. In principle, this is a very flexible model. In practice, the computational cost of evaluating the likelihood restricts routine implementation of the model to low-dimensional <span class="math inline">\(U_i\)</span> and <span class="math inline">\(V_i\)</span>. Wulfsohn and Tsiatis (1997) considered the special case in which the repeated measurements follow the so-called random intercept and slope model with <span class="math inline">\(a_{ij}^\top = (1, t_{ij})\)</span>, whilst the random effects for the repeated measurement and time-to-event sub-models are proportional, hence <span class="math inline">\(b_{ij}^\top V_i = \phi a_{ij}^\top U_i\)</span>.</p>
 <p>The function provided in the <code>joineR</code> package for fitting Wulfsohn-Tsiatis models is <code>joint</code>, which allows the user to choose from three models for the joint random effects: random intercept; random intercept and slope; quadratic random effects.</p>
 <p>The first argument to <code>joint</code> is a <code>jointdata</code> object that provides the data to be analysed. The following two arguments specify the longitudinal and survival sub-models, making use of the regular <code>R formula</code> syntax, including incorporating a <code>Surv</code> object as the response in the survival sub-model for compatibility with the <code>R</code> function <code>coxph</code> from the <code>survival</code> package. The next argument <code>model()</code> allows the user to choose one of the three candidate random effects models, and defaults to the random intercept and slope case. Setting <code>model = &quot;int&quot;</code> and <code>model = &quot;quad&quot;</code> will fit a random intercept only and random quadratic joint model respectively.</p>
 <p>The functions to fit a joint random effects model have options to fit the repeated measurement sub-model and the hazard sub-model separately.</p>
@@ -395,11 +396,16 @@ mental.jd &lt;-<span class="st"> </span><span class="kw">jointdata</span>(mental
 <span class="kw">names</span>(model.jointrandom)</code></pre></div>
 <pre><code>##  [1] &quot;coefficients&quot; &quot;sigma.z&quot;      &quot;sigma.u&quot;      &quot;hazard&quot;      
 ##  [5] &quot;loglik&quot;       &quot;numIter&quot;      &quot;convergence&quot;  &quot;model&quot;       
-##  [9] &quot;sepassoc&quot;     &quot;sepests&quot;      &quot;sep.loglik&quot;   &quot;formulae&quot;    
-## [13] &quot;data&quot;         &quot;call&quot;</code></pre>
+##  [9] &quot;sepassoc&quot;     &quot;sepests&quot;      &quot;compRisk&quot;     &quot;sep.loglik&quot;  
+## [13] &quot;formulae&quot;     &quot;data&quot;         &quot;call&quot;</code></pre>
 <p>There is a <code>summary</code> method for a model fitted using <code>joint</code>. This produces a summarized version of the model fit, omitting some of the information contained within the fitted object itself.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model.jointrandom)</code></pre></div>
-<pre><code>## Random effects joint model
+<pre><code>## 
+## Call:
+## joint(data = mental.jd, long.formula = Y ~ 1 + time + treat, 
+##     surv.formula = Surv(surv.time, cens.ind) ~ treat, model = &quot;int&quot;)
+## 
+## Random effects joint model
 ##  Data: mental.jd 
 ##  Log-likelihood: -2884.045 
 ## 
@@ -429,12 +435,12 @@ mental.jd &lt;-<span class="st"> </span><span class="kw">jointdata</span>(mental
 model.jointrandom.se</code></pre></div>
 <pre><code>##      Component   Parameter Estimate      SE 95%Lower 95%Upper
 ## 1 Longitudinal (Intercept)  61.9221  2.2636  57.0043  66.2792
-## 2                     time  -0.5969  0.1854  -1.0435   -0.296
+## 2                     time  -0.5969  0.1854  -1.0435  -0.2960
 ## 3                    treat  -3.8545  1.0602  -6.1472  -1.9372
-## 4     Survival       treat  -0.6002  0.2234  -1.1789  -0.2448
-## 5  Association     gamma_0   0.0865  0.0182   0.0542    0.127
+## 4      Failure       treat  -0.6002  0.2234  -1.1789  -0.2448
+## 5  Association     gamma_0   0.0865  0.0182   0.0542   0.1270
 ## 6     Variance         U_0  99.8476 10.9015  74.7947 118.7071
-## 7                 Residual  64.3433  7.9791  48.6682   77.384</code></pre>
+## 7                 Residual  64.3433  7.9791  48.6682  77.3840</code></pre>
 <p>As mentioned previously, the argument <code>model</code> in the function <code>joint</code> can be altered to fit a joint random effects model with a random intercept and slope, i.e. the Wulfsohn-Tsiatis model, or a random quadratic for the repeated measurements sub-model. Choosing the former leads to the following specification for the sub-models:</p>
 <span class="math display">\[\begin{eqnarray*}
   \mbox{longitudinal sub-model:  } &amp; Y_{ij} = X_{i1}^\top \beta_1 + U_{0i} + U_{1i}t_{ij} + Z_{ij} \\
@@ -486,7 +492,12 @@ heart.grad.jd &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<s
                                  <span class="kw">Surv</span>(fuyrs, status) ~<span class="st"> </span>age +<span class="st"> </span>sex,
                                  <span class="dt">model =</span> <span class="st">&quot;int&quot;</span>)
 <span class="kw">summary</span>(model.jointrandom.heart)</code></pre></div>
-<pre><code>## Random effects joint model
+<pre><code>## 
+## Call:
+## joint(data = heart.grad.jd, long.formula = grad ~ age + sex, 
+##     surv.formula = Surv(fuyrs, status) ~ age + sex, model = &quot;int&quot;)
+## 
+## Random effects joint model
 ##  Data: heart.grad.jd 
 ##  Log-likelihood: -2930.46 
 ## 
@@ -514,7 +525,7 @@ heart.grad.jd &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<s
 </div>
 <div id="acknowledgements" class="section level1">
 <h1>Acknowledgements</h1>
-<p>The <code>joineR</code> package was funded by the UK Medical Research Council under a grant with Principal Investigator Prof. Paula Williamson; Co-Investigators Prof. Peter J. Diggle and Prof. Robin Henderson; and Research Associates Dr Ruwanthi Kolamunnage-Dona, Dr Peter Philipson, and Dr Ines Sousa.</p>
+<p>The <code>joineR</code> package was funded by the UK Medical Research Council (MRC) under a grant with Principal Investigator (PI) Prof. Paula Williamson; Co-Investigators (Co-Is) Prof. Peter J. Diggle and Prof. Robin Henderson; and Research Associates Dr Ruwanthi Kolamunnage-Dona, Dr Peter Philipson, and Dr Ines Sousa (Grant numbers G0400615). Updates to it were made under a separate MRC grant with PI Dr Ruwanthi Kolamunnage-Dona, Co-Is Dr Peter Philipson and Dr Andrea Jorgensen, and Research Associate Dr Graeme L. Hickey (Grant number MR/M013227/1).</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
@@ -525,7 +536,7 @@ heart.grad.jd &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<s
 <li><p>Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal measurements and event time data. <em>Biostatistics</em>, 2000; <strong>1</strong>: 465-480</p></li>
 <li><p>Henderson R, Diggle PJ, Dobson A. Identification and efficacy of longitudinal markers for survival. <em>Biostatistics</em>, 2002; <strong>3</strong>: 33-50.</p></li>
 <li><p>Lim E, Ali A, Theodorou P, Sousa I, Ashrafian H, Chamageorgakis AD, et al. A longitudinal study of the profile and predictors of left ventricular mass regression after stentless aortic valve replacement. <em>Annals of Thoracic Surgery</em>, 2008; <strong>85</strong>: 2026-2029.</p></li>
-<li><p>Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data measured with error. <em>Biometrics</em>, 1997; <strong>53</strong>: 330-339</p></li>
+<li><p>Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data measured with error. <em>Biometrics</em>, 1997; <strong>53</strong>: 330-339.</p></li>
 </ol>
 </div>
 
@@ -536,7 +547,7 @@ heart.grad.jd &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<s
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

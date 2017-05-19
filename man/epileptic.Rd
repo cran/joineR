@@ -25,6 +25,11 @@
   randomized drug and \code{0 = }not withdrawn from randomized drug/lost to
   follow up).}
   
+  \item{\code{with.status2}}{censoring indicator (\code{1 = }withdrawal of 
+  randomized drug due to inadequate seizure control, (\code{2 = }withdrawal 
+  of randomized drug due to unacceptable adverse effects, and \code{0 = }not
+  withdrawn from randomized drug/lost to follow up).}
+  
   \item{\code{with.status.uae}}{\code{1 = }withdrawal due to unacceptable 
   adverse effects, \code{0 = }otherwise.}
   
@@ -42,26 +47,26 @@
   
   }}
 \source{
-SANAD Trial - University of Liverpool
+SANAD Trial, University of Liverpool
 }
 \usage{
 data(epileptic)
 }
 \description{
-The SANAD (Standard and New Anti-epileptic Drugs) study (Marson et al., 2007) 
-is a randomized control trial of standard and new anti-epileptic drugs, 
-comparing effects on longer term clinical outcomes. The data consists of 
-longitudinal measurements of calibrated dose for the groups randomized to a 
-standard drug (CBZ) and a new drug (LTG). The objective of the analysis is to
-investigate the effect of drug titration on the relative effects of LTG and 
-CBZ on treatment failure (withdrawal of the randomized drug). There are 
-several baseline covariates available, and also data on the time to 
-withdrawal from randomized drug.
+The SANAD (Standard and New Anti-epileptic Drugs) study (Marson
+  et al., 2007) is a randomized control trial of standard and new
+  anti-epileptic drugs, comparing effects on longer term clinical outcomes.
+  The data consists of longitudinal measurements of calibrated dose for the
+  groups randomized to a standard drug (CBZ) and a new drug (LTG). The
+  objective of the analysis is to investigate the effect of drug titration on
+  the relative effects of LTG and CBZ on treatment failure (withdrawal of the
+  randomized drug). There are several baseline covariates available, and also
+  data on the time to withdrawal from randomized drug.
 }
 \references{
 Marson AG, Appleton R, Baker GA, et al. A randomised controlled trial 
 examining longer-term outcomes of standard versus new antiepileptic drugs. 
-The SANAD Trial. \emph{Health Technology Assessment}. 2007; \strong{11(37)}.
+The SANAD Trial. \emph{Health Tech Assess}. 2007; \strong{11(37)}.
 
 Marson AG, Al-Kharusi AM, Alwaidh M, et al. The SANAD study of effectiveness 
 of carbamazepine, gabapentin, lamotrigine, oxcarbazepine, or topiramate for 
@@ -77,4 +82,3 @@ longitudinal and competing risks data. \emph{Stats Med.} 2008;
   \code{\link{mental}}.
 }
 \keyword{datasets}
-

@@ -1,8 +1,9 @@
 #' Plot longitudinal data
 #' 
-#' Plot longitudinal data of an object of class \code{jointdata}, for a 
-#' longitudinal variable. It is possible to plot all the subjects in the data 
-#' set, or just a selected \code{subset}. See \code{\link{subset.jointdata}}.
+#' @description Plot longitudinal data of an object of class \code{jointdata},
+#'   for a longitudinal variable. It is possible to plot all the subjects in the
+#'   data set, or just a selected \code{subset}. See
+#'   \code{\link{subset.jointdata}}.
 #' 
 #' @param x object of class \code{jointdata}.
 #' @param Y.col column number, or column name, of longitudinal variable to be 
@@ -26,7 +27,6 @@
 #' @export
 #' 
 #' @examples
-#' 
 #' data(heart.valve)
 #' heart.surv <- UniqueVariables(heart.valve,
 #'                               var.col = c("fuyrs", "status"),
@@ -40,17 +40,21 @@
 plot.jointdata <- function(x, Y.col, type, xlab, xlim = NULL, ylim = NULL, 
                            main = NA, pty, ...) {
   
+  if (!inherits(x, "jointdata")) {
+    stop("Data must be of class 'jointdata'\n")
+  }
+  
   if (missing(Y.col)) {
     Y.col <- NA
   }
   if (missing(type)) {
-    type = "l"
+    type <- "l"
   }
   if (missing(xlab)) {
-    xlab = "Time"
+    xlab <- "Time"
   }
   if (missing(pty)) {
-    pty = "m"
+    pty <- "m"
   }
   if (sum(is.na(Y.col)) > 0) {
     n.resp <- dim(x$longitudinal)[2] - 2
@@ -58,21 +62,21 @@ plot.jointdata <- function(x, Y.col, type, xlab, xlim = NULL, ylim = NULL,
       stop("Not reasonable to plot individual profiles for more than 9 variables. Try to specify Y.col")
     }
     if (n.resp %in% c(2, 4)) {
-      nc = 2
+      nc <- 2
     } else {
       if (n.resp %in% 1) {
-        nc = 1
+        nc <- 1
       } else {
-        nc = 3
+        nc <- 3
       }
     }
     if (n.resp %in% c(1, 2, 3)) {
-      nr = 1
+      nr <- 1
     } else {
       if (n.resp <= 6) {
-        nr = 2
+        nr <- 2
       } else {
-        nr = 3
+        nr <- 3
       }
     }
     
@@ -131,24 +135,21 @@ plot.jointdata <- function(x, Y.col, type, xlab, xlim = NULL, ylim = NULL,
         stop("Not reasonable to plot individual profiles for more than 9 variables. Try to specify Y.col")
       }
       if (n.resp %in% c(2, 4)) {
-        nc = 2
+        nc <- 2
       } else {
         if (n.resp %in% 1) {
-          nc = 1
-        }
-        else {
-          nc = 3
+          nc <- 1
+        } else {
+          nc <- 3
         }
       }
       if (n.resp %in% c(1, 2, 3)) {
-        nr = 1
-      }
-      else {
+        nr <- 1
+      } else {
         if (n.resp <= 6) {
-          nr = 2
-        }
-        else {
-          nr = 3
+          nr <- 2
+        } else {
+          nr <- 3
         }
       }
       par(mfrow = c(nr, nc), pty = pty)
@@ -161,8 +162,7 @@ plot.jointdata <- function(x, Y.col, type, xlab, xlim = NULL, ylim = NULL,
         resp <- x$longitudinal[, Y.col.i]
       } else {
         resp <- x$longitudinal[[Y.col.i]]
-        Y.col.i <- which(names(x$longitudinal) %in% 
-                           Y.col.i)
+        Y.col.i <- which(names(x$longitudinal) %in% Y.col.i)
       }
       subject <- x$longitudinal[[x$subj.col]]
       time <- x$longitudinal[[x$time.col]]

@@ -21,12 +21,12 @@ A graphical device with a plot for longitudinal data. Other functions
   \code{\link[graphics]{lines}}.
 }
 \description{
-Add points to an existing plot of an object of class \code{jointdata}, for a 
-longitudinal variable. It is possible plot all the subjects in the data set, 
-or just a selected \code{subset}. See \code{\link{subset.jointdata}}.
+Add points to an existing plot of an object of class
+  \code{jointdata}, for a longitudinal variable. It is possible plot all the
+  subjects in the data set, or just a selected \code{subset}. See
+  \code{\link{subset.jointdata}}.
 }
 \examples{
-
 data(heart.valve)
 heart.surv <- UniqueVariables(heart.valve,
                               var.col = c("fuyrs", "status"),
@@ -49,4 +49,3 @@ points(heart.jd.2, Y.col = "grad", col = "blue", pch = 20)
 Ines Sousa (\email{isousa@math.uminho.pt})
 }
 \keyword{aplot}
-
