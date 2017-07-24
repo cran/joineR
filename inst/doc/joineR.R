@@ -69,28 +69,6 @@ sum(is.na(epileptic.balanced))
 summarybal(mental, Y.col = 2:7, times = c(0, 1, 2, 4, 6, 8), 
            na.rm = TRUE)
 
-## ----liver_jm, cache=TRUE------------------------------------------------
-liver.long <- liver[, 1:3]
-liver.surv <- UniqueVariables(liver, var.col = c("survival", "cens"), 
-                              id.col = "id")
-liver.baseline <- UniqueVariables(liver, var.col = 4,
-                                  id.col = "id")
-
-liver.jd <- jointdata(longitudinal = liver.long,
-                      survival = liver.surv, 
-                      baseline = liver.baseline,
-                      id.col = "id",
-                      time.col = "time")
-
-## ----heart.valve_jd, cache=TRUE------------------------------------------
-heart.surv <- UniqueVariables(heart.valve, var.col = c("fuyrs", "status"),
-                              id.col = "num")
-heart.long <- heart.valve[, c(1, 4, 5, 7, 8, 9, 10, 11)]
-heart.jd <- jointdata(longitudinal = heart.long, 
-                      survival = heart.surv,
-                      id.col = "num",
-                      time.col = "time")
-
 ## ----heart.valve_jd_summary----------------------------------------------
 summary(heart.jd)
 
@@ -138,12 +116,6 @@ V <- cov(residuals, use = "pairwise")
 R <- cor(residuals, use = "pairwise")
 round(cbind(diag(V), R), 3)
 
-## ----mental_variogram, cache=TRUE----------------------------------------
-vgm <- variogram(indv = mental.unbalanced[, 1], 
-                 time = mental.unbalanced[, 2], 
-                 Y = mental.unbalanced[, 3])
-vgm$sigma2
-
 ## ----mental_variogram_plot, fig.width=7, fig.height=4.5------------------
 par(mfrow = c(1, 3))
 plot(vgm$svar[, 1], vgm$svar[, 2], 
@@ -152,30 +124,8 @@ plot(vgm$svar[, 1], vgm$svar[, 2],
 plot(vgm, points = FALSE, ylim = c(0, 200)) 
 plot(vgm)
 
-## ----mental_jm1, cache=TRUE----------------------------------------------
-mental.long <- mental.unbalanced[, 1:3]
-mental.surv <- UniqueVariables(mental.unbalanced, 
-                               6:7, id.col = 1)
-mental.baseline <- UniqueVariables(mental.unbalanced,
-                                   4, id.col = 1)
-mental.jd <- jointdata(mental.long, 
-                       mental.surv,
-                       mental.baseline,
-                       id.col = "id", 
-                       time.col = "time")
-
-## ----mental_jm2, cache=TRUE----------------------------------------------
-model.jointrandom <- joint(mental.jd, Y ~ 1 + time + treat, 
-                           Surv(surv.time, cens.ind) ~ treat,
-                           model = "int")
-names(model.jointrandom)
-
 ## ----mental_jm_summary---------------------------------------------------
 summary(model.jointrandom)
-
-## ----mental_jm_boot, cache=TRUE------------------------------------------
-model.jointrandom.se <- jointSE(model.jointrandom, n.boot = 100)
-model.jointrandom.se
 
 ## ----liver_jm1, eval=FALSE-----------------------------------------------
 #  model.jointrandom.liver <- joint(
@@ -193,26 +143,4 @@ model.jointrandom.se
 
 ## ----liver_jm_loglik, eval=FALSE-----------------------------------------
 #  model.jointrandom.liver.sep$loglik$jointlhood - model.jointrandom.liver$loglik$jointlhood
-
-## ----heart.valve_jointdata, cache=TRUE-----------------------------------
-heart.grad <- heart.valve[!is.na(heart.valve$grad), ]
-heart.grad.long <- heart.grad[, c(1, 4, 7)]
-heart.grad.surv <- UniqueVariables(heart.grad,
-                                   var.col = c("fuyrs", "status"),
-                                   id.col = "num")
-heart.grad.base <- UniqueVariables(heart.grad, 
-                                   var.col = 2:3,
-                                   id.col = "num")
-heart.grad.jd <- jointdata(longitudinal = heart.grad.long,
-                           survival = heart.grad.surv,
-                           baseline = heart.grad.base,
-                           id.col = "num",
-                           time.col = "time")
-
-## ----heart.valve_jm, cache=TRUE------------------------------------------
-model.jointrandom.heart <- joint(heart.grad.jd,
-                                 grad ~ age + sex,
-                                 Surv(fuyrs, status) ~ age + sex,
-                                 model = "int")
-summary(model.jointrandom.heart)
 

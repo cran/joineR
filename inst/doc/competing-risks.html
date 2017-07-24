@@ -12,7 +12,7 @@
 
 <meta name="author" content="Graeme L. Hickey, Pete Philipson, Ruwanthi Kolamunnage-Dona, Paula Williamson" />
 
-<meta name="date" content="2017-05-19" />
+<meta name="date" content="2017-07-24" />
 
 <title>Competing risks</title>
 
@@ -70,21 +70,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Competing risks</h1>
 <h4 class="author"><em>Graeme L. Hickey, Pete Philipson, Ruwanthi Kolamunnage-Dona, Paula Williamson</em></h4>
-<h4 class="date"><em>2017-05-19</em></h4>
+<h4 class="date"><em>2017-07-24</em></h4>
 
 
 
-<div id="description" class="section level1">
-<h1>Description</h1>
-<p>As of version 2.0, <code>joineR</code> fits the joint model proposed by Williamson et al. (2008) for joint models of longitudinal data and competing risks. In Williamson et al. (2008), the longitudinal data submodel remained as per that analyzed in Henderson et al. (2000), namely</p>
-<p><span class="math display">\[Y_{ij} = x_{ij} \beta + a_{ij}^\top U_i + Z_{ij},\]</span></p>
-<p>where <span class="math inline">\(Y_{ij}\)</span> is the <span class="math inline">\(j\)</span>-th repeated measurement on subject <span class="math inline">\(i\)</span>, <span class="math inline">\(U_i\)</span> is a latent vector that follows a zero-mean multivariate normal distribution, <span class="math inline">\(x_{ij}\)</span> and <span class="math inline">\(a_{ij}\)</span> are vectors of explanatory variables that may be time-constant or time-varying, and the <span class="math inline">\(Z_{ij}\)</span> are mutually independent errors, <span class="math inline">\(Z_{ij} \sim {\rm N}(0,\tau^2)\)</span>.</p>
+<p>As of version 1.2.0, <code>joineR</code> fits the joint model proposed by Williamson et al. (2008) for joint models of longitudinal data and competing risks. Here, the longitudinal data submodel remains as per that analyzed in Henderson et al. (2000), namely</p>
+<p><span class="math display">\[Y_i(t) = X_i(t)^\top \beta + Z_i(t)^\top U_i + \epsilon_i(t),\]</span></p>
+<p>where <span class="math inline">\(Y_i(t)\)</span> is a repeated measurement on subject <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span>, <span class="math inline">\(U_i\)</span> is a latent vector that follows a zero-mean multivariate normal distribution, <span class="math inline">\(X_i(t)\)</span> and <span class="math inline">\(Z_i(t)\)</span> are vectors of explanatory variables that may be time-constant or time-varying, and the <span class="math inline">\(\epsilon_i(t)\)</span> are mutually independent errors, <span class="math inline">\(\epsilon_i(t) \sim {\rm N}(0, \tau^2)\)</span>.</p>
 <p>For the competing risks data, a cause-specific hazards submodel is proposed, namely</p>
-<p><span class="math display">\[\lambda_{ig}(t) = \lambda_{0g}(t) \exp(w_{ij} \alpha_g + b_{ij}^\top 
-V_{ig}),\]</span></p>
-<p>where <span class="math inline">\(w_{ij}\)</span> and <span class="math inline">\(b_{ij}\)</span> are vectors of explanatory variables that may be time-constant or time-varying, <span class="math inline">\(V_i\)</span> is another latent vector that follows a zero-mean multivariate normal distribution, and <span class="math inline">\(\lambda_{0g}(t)\)</span> is the baseline hazard function for cause <span class="math inline">\(g = 1, 2\)</span>.</p>
-<p>In <code>joineR</code>, when competing risks data are analysed, <span class="math inline">\(a_{ij}^\top = (1, t_{ij})\)</span>, whilst the random effects for the repeated measurement and time-to-event sub-models are proportional, hence <span class="math inline">\(b_{ij}^\top V_{ig} = \gamma_g a_{ij}^\top U_i\)</span>. We also note that currently on 2 failure types are be modelled, which must be coded as 1 and 2 (with 0 representing censoring).</p>
-</div>
+<p><span class="math display">\[\lambda_{ig}(t) = \lambda_{0g}(t) \exp(W_i^\top \alpha_g + \gamma_g V_{ig}),\]</span></p>
+<p>where <span class="math inline">\(W_i\)</span> is a vectors of time-constant explanatory variables, <span class="math inline">\(V_i\)</span> is another latent vector that follows a zero-mean multivariate normal distribution, and <span class="math inline">\(\lambda_{0g}(t)\)</span> is the baseline hazard function for cause <span class="math inline">\(g = 1, 2\)</span>. In <code>joineR</code>, when competing risks data are analysed, <span class="math inline">\(Z_i(t)^\top = (1, t)\)</span>, We also note that currently only 2 failure types are be modelled, which must be coded as 1 and 2 (with 0 representing censoring).</p>
 <div id="example" class="section level1">
 <h1>Example</h1>
 <p>We will perform the analysis from Williamson et al. (2008) to the SANAD (Standard And New Antiepileptic Drugs) study data – the largest trial of AEDs to date (Marson et al., 2007).</p>
@@ -121,11 +116,10 @@ V_{ig}),\]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">longitudinal &lt;-<span class="st"> </span>epileptic[, <span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dv">13</span>)]
 survival &lt;-<span class="st"> </span><span class="kw">UniqueVariables</span>(epileptic, <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">6</span>), <span class="st">&quot;id&quot;</span>)
 baseline &lt;-<span class="st"> </span><span class="kw">UniqueVariables</span>(epileptic, <span class="st">&quot;treat&quot;</span>, <span class="st">&quot;id&quot;</span>)
-data &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<span class="dt">longitudinal =</span> longitudinal,
+data &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<span class="dt">longitudinal =</span> longitudinal, 
                   <span class="dt">survival =</span> survival,
                   <span class="dt">baseline =</span> baseline,
-                  <span class="dt">id.col =</span> <span class="st">&quot;id&quot;</span>,
-                  <span class="dt">time.col =</span> <span class="st">&quot;time&quot;</span>)
+                  <span class="dt">id.col =</span> <span class="st">&quot;id&quot;</span>, <span class="dt">time.col =</span> <span class="st">&quot;time&quot;</span>)
 
 <span class="kw">summary</span>(data)</code></pre></div>
 <pre><code>## $subjects
@@ -157,11 +151,9 @@ data &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<span class
 <div id="model" class="section level2">
 <h2>Model</h2>
 <p>To fit the joint model, we use the usual <code>joint()</code> function as</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit2 &lt;-<span class="st"> </span><span class="kw">joint</span>(<span class="dt">data =</span> data,
-              <span class="dt">long.formula =</span> dose ~<span class="st"> </span>time +<span class="st"> </span>treat +<span class="st"> </span>interaction,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit2 &lt;-<span class="st"> </span><span class="kw">joint</span>(<span class="dt">data =</span> data, <span class="dt">long.formula =</span> dose ~<span class="st"> </span>time +<span class="st"> </span>treat +<span class="st"> </span>interaction,
               <span class="dt">surv.formula =</span> <span class="kw">Surv</span>(with.time, with.status2) ~<span class="st"> </span>treat,
-              <span class="dt">longsep =</span> <span class="ot">FALSE</span>, <span class="dt">survsep =</span> <span class="ot">FALSE</span>,
-              <span class="dt">gpt =</span> <span class="dv">3</span>)</code></pre></div>
+              <span class="dt">longsep =</span> <span class="ot">FALSE</span>, <span class="dt">survsep =</span> <span class="ot">FALSE</span>, <span class="dt">gpt =</span> <span class="dv">3</span>)</code></pre></div>
 <pre><code>## Competing risks detected</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(fit2)</code></pre></div>
 <pre><code>## 
@@ -214,8 +206,8 @@ fit2.se</code></pre></div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<p>Williamson PR, Kolamunnage-Dona R, Philipson P, Marson AG. Joint modelling of longitudinal and competing risks data. <em>Statistics in Medicine</em>, 2008; <strong>27</strong>: 6426-6438.</p>
-<ol start="4" style="list-style-type: decimal">
+<ol style="list-style-type: decimal">
+<li><p>Williamson PR, Kolamunnage-Dona R, Philipson P, Marson AG. Joint modelling of longitudinal and competing risks data. <em>Statistics in Medicine</em>, 2008; <strong>27</strong>: 6426-6438.</p></li>
 <li><p>Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal measurements and event time data. <em>Biostatistics</em>, 2000; <strong>1</strong>: 465-480</p></li>
 <li><p>Marson AG, Al-Kharusi AM, Alwaidh M, Appleton R, Baker GA, Chadwick DW, Cramp C, Cockerell OC, Cooper PN, Doughty J, Eaton B, Gamble C, Goulding PJ, Howell SJL, Hughes A, Jackson M, Jacoby A, Kellett M, Lawson GR, Leach JP, Nicolaides P, Roberts R, Shackley P, Shen J, Smith DF, Smith PEM, Tudur Smith C, Vanoli A, Williamson PR on behalf of the SANAD Study group. Carbamazepine, gabapentin, lamotrigine, oxcarbazepine or topiramate for partial epilepsy: results from the SANAD trial. <em>The Lancet</em>, 2007; <strong>369</strong>: 1000–1015.</p></li>
 <li><p>Commission on Antiepileptic Drugs. Considerations on designing clinical trials to evaluate the place of new antiepileptic drugs in the treatment of newly diagnosed and chronic patients with epilepsy. <em>Epilepsia</em>, 1998; <strong>39</strong>: 799–803.</p></li>
