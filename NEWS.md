@@ -1,8 +1,21 @@
+# joineR 1.2.2
+
+## Minor update
+
+* Modified the control parameters for the call to `nlme::lme()` that is used to
+generate initial parameter estimates. In some bootstrap settings, this was
+throwing an error, leading to the entire bootstrap run to cease.
+
+## Housekeeping
+
+* Added hex sticker badge.
+
 # joineR 1.2.1
 
 ## Minor updates
 
-* Added Rd file for `joint.object` to describe what is contained in an object of class `joint`.
+* Added Rd file for `joint.object` to describe what is contained in an object of
+class `joint`.
 
 * Added the ubiquitous `aids` dataset for teaching purposes.
 

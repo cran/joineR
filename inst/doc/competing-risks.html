@@ -12,7 +12,7 @@
 
 <meta name="author" content="Graeme L. Hickey, Pete Philipson, Ruwanthi Kolamunnage-Dona, Paula Williamson" />
 
-<meta name="date" content="2017-07-24" />
+<meta name="date" content="2017-09-14" />
 
 <title>Competing risks</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Competing risks</h1>
 <h4 class="author"><em>Graeme L. Hickey, Pete Philipson, Ruwanthi Kolamunnage-Dona, Paula Williamson</em></h4>
-<h4 class="date"><em>2017-07-24</em></h4>
+<h4 class="date"><em>2017-09-14</em></h4>
 
 
 
@@ -111,9 +111,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 5               0   CBZ 75.67      M        No
 ## 6               0   CBZ 75.67      M        No</code></pre>
 <p>In the analysis, Williamson et al. (2008) considered an interaction term between time and treatment in the longitudinal data submodel. Therefore, we will manually code this term using</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epileptic$interaction &lt;-<span class="st"> </span><span class="kw">with</span>(epileptic, time *<span class="st"> </span>(treat ==<span class="st"> &quot;LTG&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epileptic<span class="op">$</span>interaction &lt;-<span class="st"> </span><span class="kw">with</span>(epileptic, time <span class="op">*</span><span class="st"> </span>(treat <span class="op">==</span><span class="st"> &quot;LTG&quot;</span>))</code></pre></div>
 <p>A <code>jointdata</code> object is first constructed using the <code>jointdata()</code> function. Note that there are several status columns: <code>with.status</code> is a composite event status (treatment failure or censored), <code>with.status.uae</code> is a binary event status for UAE (with failure due to ISC treated as censoring), <code>with.status.isc</code> is a binary event status for ISC (with failure due to UAE treated as censoring), and <code>with.status2</code> is a vector taking values 0, 1, and 2, with 0 denoting censoring and 1 and 2 denoting dropout due to ISC and UAE, respectively.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">longitudinal &lt;-<span class="st"> </span>epileptic[, <span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dv">13</span>)]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">longitudinal &lt;-<span class="st"> </span>epileptic[, <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">13</span>)]
 survival &lt;-<span class="st"> </span><span class="kw">UniqueVariables</span>(epileptic, <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">6</span>), <span class="st">&quot;id&quot;</span>)
 baseline &lt;-<span class="st"> </span><span class="kw">UniqueVariables</span>(epileptic, <span class="st">&quot;treat&quot;</span>, <span class="st">&quot;id&quot;</span>)
 data &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<span class="dt">longitudinal =</span> longitudinal, 
@@ -151,8 +151,8 @@ data &lt;-<span class="st"> </span><span class="kw">jointdata</span>(<span class
 <div id="model" class="section level2">
 <h2>Model</h2>
 <p>To fit the joint model, we use the usual <code>joint()</code> function as</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit2 &lt;-<span class="st"> </span><span class="kw">joint</span>(<span class="dt">data =</span> data, <span class="dt">long.formula =</span> dose ~<span class="st"> </span>time +<span class="st"> </span>treat +<span class="st"> </span>interaction,
-              <span class="dt">surv.formula =</span> <span class="kw">Surv</span>(with.time, with.status2) ~<span class="st"> </span>treat,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit2 &lt;-<span class="st"> </span><span class="kw">joint</span>(<span class="dt">data =</span> data, <span class="dt">long.formula =</span> dose <span class="op">~</span><span class="st"> </span>time <span class="op">+</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>interaction,
+              <span class="dt">surv.formula =</span> <span class="kw">Surv</span>(with.time, with.status2) <span class="op">~</span><span class="st"> </span>treat,
               <span class="dt">longsep =</span> <span class="ot">FALSE</span>, <span class="dt">survsep =</span> <span class="ot">FALSE</span>, <span class="dt">gpt =</span> <span class="dv">3</span>)</code></pre></div>
 <pre><code>## Competing risks detected</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(fit2)</code></pre></div>

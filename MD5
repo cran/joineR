@@ -1,7 +1,7 @@
-a6a0f4132912148189e372880b36040a *DESCRIPTION
+62992fc123b65476f88d6b3217a1775e *DESCRIPTION
 84dcc94da3adb52b53ae4fa38fe49e5d *LICENSE
 976be6ae794f477ce78d591bf9266b99 *NAMESPACE
-4269789924865e1201daadcfcb8b6afe *NEWS.md
+44b00f904f11402e907b4b1be5d64086 *NEWS.md
 55e4ebb3a8d82e8445a2ede8facd87ad *R/UniqueVariables.R
 5e9edc59d37bdcd2868d1c644e0388b2 *R/aids.R
 4824386ebdb6d82517f67651b0933ea3 *R/emUpdate.R
@@ -16,7 +16,7 @@ c0c0f83ec88887e75eef4c942bc13d45 *R/jointdata.R
 264557e74c4f595fb8536eb2d143dbab *R/jointplot.R
 9b94ae3985276767971768ed3f3450af *R/lines.jointdata.R
 787e1aeecd1869a036232692b0dd80ff *R/liver.R
-cfbd0664439e0a7ef9b64963a95b9915 *R/longst.R
+b27fe1d2109965d0215c1780f4df92fe *R/longst.R
 e6fe0c5fd9127fe75eb14a309631bf49 *R/mental.R
 e816fcec2d96e05587b2cda059add4bf *R/plot.jointdata.R
 580306bb956f6ebfd3fdadfbdc75882d *R/plot.vargm.R
@@ -35,7 +35,7 @@ cc2292d6d960644f1a7e1321a77948cf *R/summarybal.R
 036f5d60b709ab7240ce3291bda04cb3 *R/to.unbalanced.R
 575643fadfb7dffdc2c44fd77e052419 *R/utils.R
 0dccbe5599da81acb927700eab32ec72 *R/variogram.R
-aedbdd588752697e85e4465a5ba430d0 *README.md
+638b71171d1f458c1fdd31b356ff668d *README.md
 f6b5e36c06b05b66c8af7d40250c9c56 *build/vignette.rds
 c9a5195938cb1ed094f4516089013b9d *data/aids.rda
 edd4989fe068bf55c313f918782b365e *data/epileptic.rda
@@ -45,13 +45,14 @@ edd4989fe068bf55c313f918782b365e *data/epileptic.rda
 7971bce865c15cc56b5352e261f2fdbc *inst/CITATION
 299ceda0b73ce3f55242c82e5aeda8e9 *inst/doc/competing-risks.R
 35744b1308616b47348de504fd01d2db *inst/doc/competing-risks.Rmd
-6699191c95f3b5c2271a82c72043cabe *inst/doc/competing-risks.html
+68d8d7c7fd43316de0748ca2c5c580d3 *inst/doc/competing-risks.html
 2bc601d56e28121b3579c27602c00ef5 *inst/doc/joineR.R
 2fd96ea7d15b04b656efeab2baafd3eb *inst/doc/joineR.Rmd
-e102504c81cea87facc0de44542fa209 *inst/doc/joineR.html
+e485d7d9e15f284488b0ddf24e680819 *inst/doc/joineR.html
 bb961061be085ae96c2b638a14f366ee *man/UniqueVariables.Rd
 06b50845dd2a69dc645f3613419674b1 *man/aids.Rd
 e2637c505a0001c4ababc0b0312dcfda *man/epileptic.Rd
+e724df2ab3a3ad90a43d5eb0dd2511ee *man/figures/hex.png
 c45958073e10c0cd5b0b76fc7a9d7b3f *man/heart.valve.Rd
 a8f206b5bcad5a2b3a2fdc3aedfd3cb7 *man/joineR.Rd
 eff048132d4c64889764a2feee58a677 *man/joint.Rd
@@ -76,7 +77,7 @@ c2e840f24a5b4d2366023bfe2253219f *man/summary.joint.Rd
 6ea026a5fa036dfdd861621323ad07cd *man/variogram.Rd
 fe54676cd0e32206e91b1ddae98901a8 *tests/testthat.R
 92d47ea32edf7fb9d4c7236bf1cde15d *tests/testthat/test-ancillary.R
-95b429c96ae708d74f3264d298bc8981 *tests/testthat/test-comprisk.R
+2e03ece7a7d278325f886dcd0f3b4e59 *tests/testthat/test-comprisk.R
 27a321e814495acca20efb8f07318df1 *tests/testthat/test-misc.R
 914414cd3285c89d3a5814d50c59c9ff *tests/testthat/test-models.R
 3662585344a35a2ecec80cf469c268a4 *tests/testthat/test-plot.R

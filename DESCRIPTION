@@ -1,7 +1,7 @@
 Package: joineR
 Type: Package
 Title: Joint Modelling of Repeated Measurements and Time-to-Event Data
-Version: 1.2.1
+Version: 1.2.2
 Authors@R: c(
     person("Pete", "Philipson", email = "pete.philipson@northumbria.ac.uk", 
         role = "aut"),
@@ -44,7 +44,7 @@ Suggests: knitr, rmarkdown, testthat, covr
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-07-24 19:44:45 UTC; graemeleehickey
+Packaged: 2017-09-14 15:43:37 UTC; graemeleehickey
 Author: Pete Philipson [aut],
   Ines Sousa [aut],
   Peter J. Diggle [aut],
@@ -54,4 +54,4 @@ Author: Pete Philipson [aut],
   Graeme L. Hickey [aut, cre],
   Maria Sudell [ctb]
 Repository: CRAN
-Date/Publication: 2017-07-24 21:23:59 UTC
+Date/Publication: 2017-09-14 16:17:43 UTC
