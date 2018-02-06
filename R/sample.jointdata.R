@@ -13,7 +13,7 @@
 #'   \code{\link{UniqueVariables}}.
 #' @keywords data
 #'   
-#' @return An x of class \code{jointdata}, with data only on the subjects 
+#' @return An object of class \code{jointdata}, with data only on the subjects 
 #'   sampled.
 #' @export
 #' 
@@ -37,9 +37,9 @@ sample.jointdata <- function(x, size, replace = FALSE) {
   re <- x
   
   if (replace) { # with replacement
-    re$subject <- re$subject[id]
+    re$subject <- re$subject[match(id, re$subject)]
     if (is.data.frame(re$longitudinal)) {
-      nn <- diff(match(x$subject, x$longitudinal[[x$subj.col]]))
+      nn <- diff(match(unique(x$longitudinal[, 1]), x$longitudinal[, 1]))
       nn[length(nn) + 1] <- length(x$longitudinal[, 1]) - sum(nn)
       mid <- match(id, origid)
       geti <- match(id, re$longitudinal[[re$subj.col]])

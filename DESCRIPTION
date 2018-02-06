@@ -1,24 +1,31 @@
 Package: joineR
 Type: Package
 Title: Joint Modelling of Repeated Measurements and Time-to-Event Data
-Version: 1.2.2
+Version: 1.2.3
 Authors@R: c(
     person("Pete", "Philipson", email = "pete.philipson@northumbria.ac.uk", 
-        role = "aut"),
+        role = "aut",
+        comment = c(ORCID = "0000-0001-7846-0208")),
     person("Ines", "Sousa", email = "isousa@mct.uminho.pt",
-        role = "aut"),
+        role = "aut",
+        comment = c(ORCID = "0000-0002-2712-1713")),
     person("Peter J.", "Diggle", email = "p.diggle@lancaster.ac.uk",
         role = "aut"),
     person("Paula", "Williamson", email = "p.r.williamson@liverpool.ac.uk",
-        role = "aut"),        
+        role = "aut",
+        comment = c(ORCID = "0000-0001-9802-6636")),        
     person("Ruwanthi", "Kolamunnage-Dona", email = "kdrr@liverpool.ac.uk", 
-        role = "aut"),
+        role = "aut",
+        comment = c(ORCID = "0000-0003-3886-6208")),
     person("Robin", "Henderson", email = "robin.henderson@ncl.ac.uk",
         role = "aut"),
     person("Graeme L.", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
-        role = c("aut", "cre")),
+        role = c("aut", "cre"),
+        comment = c(ORCID = "0000-0002-4989-0054")),
     person("Maria", "Sudell", email = "m.e.sudell@liverpool.ac.uk",
-        role = "ctb")
+        role = "ctb"),
+    person("Medical Research Council", role = "fnd",
+        comment = "Grant numbers: G0400615 and MR/M013227/1")
     )
 Encoding: UTF-8
 Maintainer: Graeme L. Hickey <graeme.hickey@liverpool.ac.uk>
@@ -44,14 +51,17 @@ Suggests: knitr, rmarkdown, testthat, covr
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-09-14 15:43:37 UTC; graemeleehickey
-Author: Pete Philipson [aut],
-  Ines Sousa [aut],
+Packaged: 2018-02-06 11:17:42 UTC; graemeleehickey
+Author: Pete Philipson [aut] (<https://orcid.org/0000-0001-7846-0208>),
+  Ines Sousa [aut] (<https://orcid.org/0000-0002-2712-1713>),
   Peter J. Diggle [aut],
-  Paula Williamson [aut],
-  Ruwanthi Kolamunnage-Dona [aut],
+  Paula Williamson [aut] (<https://orcid.org/0000-0001-9802-6636>),
+  Ruwanthi Kolamunnage-Dona [aut]
+    (<https://orcid.org/0000-0003-3886-6208>),
   Robin Henderson [aut],
-  Graeme L. Hickey [aut, cre],
-  Maria Sudell [ctb]
+  Graeme L. Hickey [aut, cre] (<https://orcid.org/0000-0002-4989-0054>),
+  Maria Sudell [ctb],
+  Medical Research Council [fnd] (Grant numbers: G0400615 and
+    MR/M013227/1)
 Repository: CRAN
-Date/Publication: 2017-09-14 16:17:43 UTC
+Date/Publication: 2018-02-06 12:38:07 UTC

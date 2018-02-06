@@ -25,10 +25,11 @@ prepSurvData <- function(surv.formula, data, id, time.long) {
                              data = cbind(data$survival, data$baseline))
     surv.cov <- surv.cov[, -1, drop = FALSE]
     rss <- as.integer(row.names(surv.cov))
-    survdat <- cbind(data$survival[[id]][rss],
-                     srv[rss, 1],
-                     srv[rss, 2],
-                     surv.cov[rss, ])
+    survdat <- data.frame(data$survival[[id]][rss],
+                          srv[rss, 1],
+                          srv[rss, 2],
+                          surv.cov[rss, ],
+                          stringsAsFactors = FALSE)
     survdat <- as.data.frame(survdat)
     names(survdat) <- c(id,
                         surv.formula[2][[1]][[2]],
@@ -42,7 +43,8 @@ prepSurvData <- function(surv.formula, data, id, time.long) {
     survdat2 <- data.frame(data$survival[[id]][rss],
                            srv[rss, 1],
                            srv[rss, 2],
-                           surv.frame[, -1])
+                           surv.frame[, -1],
+                           stringsAsFactors = FALSE)
     names(survdat2) <- c(id,
                          surv.formula[2][[1]][[2]],
                          surv.formula[2][[1]][[3]],
