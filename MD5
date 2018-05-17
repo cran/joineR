@@ -1,7 +1,7 @@
-e12ba4c5d4d59a2ac2217d52c9f22c85 *DESCRIPTION
+551c91a5f5d9a8c6f81d8ca362dbb577 *DESCRIPTION
 84dcc94da3adb52b53ae4fa38fe49e5d *LICENSE
 976be6ae794f477ce78d591bf9266b99 *NAMESPACE
-6e8651a6e84f4b3f609ad95d3bf06835 *NEWS.md
+73c9456be6d815d0ea2a3c6d09c1601a *NEWS.md
 55e4ebb3a8d82e8445a2ede8facd87ad *R/UniqueVariables.R
 5e9edc59d37bdcd2868d1c644e0388b2 *R/aids.R
 4824386ebdb6d82517f67651b0933ea3 *R/emUpdate.R
@@ -35,8 +35,8 @@ cc2292d6d960644f1a7e1321a77948cf *R/summarybal.R
 036f5d60b709ab7240ce3291bda04cb3 *R/to.unbalanced.R
 575643fadfb7dffdc2c44fd77e052419 *R/utils.R
 0dccbe5599da81acb927700eab32ec72 *R/variogram.R
-48aca53ca639d328461e5fc4e570b8a6 *README.md
-8896588d6cbc902305dcee49379e8e63 *build/vignette.rds
+b282feda99033de1c85e3b11d571a75b *README.md
+a94f4c8d3d85e38392a960ca3c99f8a8 *build/vignette.rds
 c9a5195938cb1ed094f4516089013b9d *data/aids.rda
 edd4989fe068bf55c313f918782b365e *data/epileptic.rda
 318a2feb822ed413b555499bc9e63876 *data/heart.valve.rda
@@ -45,10 +45,10 @@ edd4989fe068bf55c313f918782b365e *data/epileptic.rda
 e3c12ff9b5aef3e4dd853963fb16ba3b *inst/CITATION
 299ceda0b73ce3f55242c82e5aeda8e9 *inst/doc/competing-risks.R
 35744b1308616b47348de504fd01d2db *inst/doc/competing-risks.Rmd
-8fd85a5f94c5d3e6ad6c4b69371223e9 *inst/doc/competing-risks.html
+391c23715273b0ed7febb5afa0f03db4 *inst/doc/competing-risks.html
 2bc601d56e28121b3579c27602c00ef5 *inst/doc/joineR.R
 2fd96ea7d15b04b656efeab2baafd3eb *inst/doc/joineR.Rmd
-d146af6a08eab523078b149f750ae699 *inst/doc/joineR.html
+395f8651c6707c0217767be3fa418115 *inst/doc/joineR.html
 bb961061be085ae96c2b638a14f366ee *man/UniqueVariables.Rd
 06b50845dd2a69dc645f3613419674b1 *man/aids.Rd
 e2637c505a0001c4ababc0b0312dcfda *man/epileptic.Rd
@@ -76,6 +76,7 @@ c2e840f24a5b4d2366023bfe2253219f *man/summary.joint.Rd
 54ae3b440b57c3e940e06d2a6e873aa9 *man/to.unbalanced.Rd
 6ea026a5fa036dfdd861621323ad07cd *man/variogram.Rd
 fe54676cd0e32206e91b1ddae98901a8 *tests/testthat.R
+43f6e68a4a5e4ec744ae68853681eadc *tests/testthat/Rplots.pdf
 92d47ea32edf7fb9d4c7236bf1cde15d *tests/testthat/test-ancillary.R
 2e03ece7a7d278325f886dcd0f3b4e59 *tests/testthat/test-comprisk.R
 27a321e814495acca20efb8f07318df1 *tests/testthat/test-misc.R

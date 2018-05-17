@@ -1,3 +1,13 @@
+# joineR 1.2.4
+
+## Housekeeping
+
+* Added Zenodo badge to README.
+
+* Added further ORCID IDs for authors.
+
+* Changed package maintainer to Pete Philipson.
+
 # joineR 1.2.3
 
 ## Bugs
