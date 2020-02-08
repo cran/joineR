@@ -1,9 +1,9 @@
 Package: joineR
 Type: Package
 Title: Joint Modelling of Repeated Measurements and Time-to-Event Data
-Version: 1.2.4
+Version: 1.2.5
 Authors@R: c(
-    person("Pete", "Philipson", email = "pete.philipson@northumbria.ac.uk", 
+    person("Pete", "Philipson", email = "peter.philipson1@newcastle.ac.uk", 
         role = c("aut", "cre"),
         comment = c(ORCID = "0000-0001-7846-0208")),
     person("Ines", "Sousa", email = "isousa@mct.uminho.pt",
@@ -41,28 +41,28 @@ Description: Analysis of repeated measurements and time-to-event data via random
     and the variogram are also included. This project is funded by the Medical 
     Research Council (Grant numbers G0400615 and MR/M013227/1).
 License: GPL-3 | file LICENSE
-URL: https://github.com/graemeleehickey/joineR/
-BugReports: https://github.com/graemeleehickey/joineR/issues
+URL: https://github.com/petephilipson/joineR/
+BugReports: https://github.com/petephilipson/joineR/issues
 LazyData: true
 ByteCompile: true
-Depends: R (>= 3.1), survival
+Depends: R (>= 3.6), survival
 Imports: graphics, lattice, MASS, nlme, statmod, stats, utils
 Suggests: knitr, rmarkdown, testthat, covr
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
 NeedsCompilation: no
-Packaged: 2018-05-17 21:08:51 UTC; Pete
-Author: Pete Philipson [aut, cre] (<https://orcid.org/0000-0001-7846-0208>>),
-  Ines Sousa [aut] (<https://orcid.org/0000-0002-2712-1713>>),
-  Peter J. Diggle [aut] (<https://orcid.org/0000-0003-3521-5020>>),
-  Paula Williamson [aut] (<https://orcid.org/0000-0001-9802-6636>>),
+Packaged: 2020-02-07 23:20:13 UTC; Pete
+Author: Pete Philipson [aut, cre] (<https://orcid.org/0000-0001-7846-0208>),
+  Ines Sousa [aut] (<https://orcid.org/0000-0002-2712-1713>),
+  Peter J. Diggle [aut] (<https://orcid.org/0000-0003-3521-5020>),
+  Paula Williamson [aut] (<https://orcid.org/0000-0001-9802-6636>),
   Ruwanthi Kolamunnage-Dona [aut]
-    (<https://orcid.org/0000-0003-3886-6208>>),
+    (<https://orcid.org/0000-0003-3886-6208>),
   Robin Henderson [aut],
-  Graeme L. Hickey [aut] (<https://orcid.org/0000-0002-4989-0054>>),
+  Graeme L. Hickey [aut] (<https://orcid.org/0000-0002-4989-0054>),
   Maria Sudell [ctb],
   Medical Research Council [fnd] (Grant numbers: G0400615 and
     MR/M013227/1)
-Maintainer: Pete Philipson <pete.philipson@northumbria.ac.uk>
+Maintainer: Pete Philipson <peter.philipson1@newcastle.ac.uk>
 Repository: CRAN
-Date/Publication: 2018-05-17 22:17:54 UTC
+Date/Publication: 2020-02-08 17:50:02 UTC
