@@ -1,5 +1,6 @@
 ## ----epileptic_data-----------------------------------------------------------
 library(joineR)
+library(survival)
 data(epileptic)
 head(epileptic)
 
@@ -26,6 +27,6 @@ fit2 <- joint(data = data, long.formula = dose ~ time + treat + interaction,
 summary(fit2)
 
 ## ----jointmodel_ses, cache=TRUE, eval=FALSE-----------------------------------
-#  fit2.se <- jointSE(fit2, n.boot = 100)
-#  fit2.se
+# fit2.se <- jointSE(fit2, n.boot = 100)
+# fit2.se
 

@@ -1,3 +1,66 @@
+# joineR 1.2.9
+
+## Bug fixes
+
+* `emUpdate()` and `emUpdateCR()` now issue a `warning()` on non-convergence instead of silently calling `print()`, making it possible for callers to catch non-convergence programmatically.
+
+* `survst()` no longer unconditionally forces the first subject's censoring indicator to 1 before passing data to `coxph()`. A proper `stop()` is raised if no events are observed. The `rs` index vector is now computed correctly via `findInterval()`, clamping subjects who precede the first event time to risk set 1 rather than producing `NA`.
+
+* `survst()` and `survstCR()` now correctly index `loglik[2]` (the fitted model log-likelihood) rather than storing the full length-2 vector in `$log.like`.
+
+* Bootstrap confidence intervals in `jointSE()` now use `quantile()` instead of a manual sorted-index lookup, fixing an off-by-one error for small `n.boot` values.
+
+## Improvements
+
+* `joint()` and `jointSE()` arguments `gpt`, `lgpt`, `max.it`, and `tol` now have explicit default values in the function signatures, replacing the previous `missing()` pattern. Defaults are visible in auto-complete and `?joint`.
+
+* `jointSE()` output now includes a `p-value` column containing two-sided Wald p-values for all fixed-effect and association parameters. Variance component rows (`U_*`, `Residual`) return `NA` as Wald tests are not appropriate for positive-constrained parameters. Closes #58.
+
+* `jointSE()` confidence intervals are now computed for all values of `n.boot`. Previously, runs with fewer than 100 bootstrap samples silently returned `0` for both CI bounds; now the empirical percentile CIs are always returned and a `warning()` is issued when `n.boot < 100` to alert the user that the intervals may be unreliable.
+
+* `tidy()` and `glance()` methods are now available for `joint` objects, providing a tidy broom-style interface. `tidy()` returns a data frame of parameter estimates (one row per term) and optionally accepts a `jointSE()` result to add standard errors, Wald statistics, p-values, and confidence intervals. `glance()` returns a single-row summary of model-level statistics including log-likelihood, AIC, BIC, number of observations, number of subjects, convergence status, and EM iteration count. Closes #59.
+
+* `simjoint()` no longer prints a progress line via `cat()` from the internal `simdat()` function. It now emits a `message()` at the `simjoint()` level, which can be suppressed with `suppressMessages()`.
+
+* `survival` has been moved from `Depends` to `Imports`. `Surv` is re-exported so existing user code does not require changes.
+
+* Test coverage improved from 89% to 93%.
+
+* Code formatted with `air`.
+
+## Housekeeping
+
+* Added a `pkgdown` site with Bootstrap 5, full dark mode (light switch), and a structured reference index. A `pkgdown.yaml` GitHub Actions workflow builds and deploys the site to GitHub Pages on push and release.
+
+* Added a `render-readme.yaml` GitHub Actions workflow that automatically re-renders `README.md` from `README.Rmd` when `README.Rmd` is changed.
+
+* Updated `R-CMD-check.yaml` and `test-coverage.yaml` GitHub Actions workflows to use `actions/checkout@v6`, `codecov-action@v7`, and `upload-artifact@v7`.
+
+* `DESCRIPTION` URL field now includes the pkgdown site, CRAN page, and GitHub repository.
+
+* README badges updated: removed defunct AppVeyor and Depsy badges; added pkgdown deployment badge and lifecycle (stable) badge.
+
+* Updated README with new MRC logo and fixed badges.
+
+* Fixed deprecated documentation for `joineR-package.R`.
+
+* Added reverse dependency checks.
+
+* Removed dead commented-out code blocks in `survst.R` and `prepSurvData.R`.
+
+* Removed no-op `fd <- fd` / `sd <- sd` assignments in `emUpdate()`.
+
+* The internal helper `sortJointData()` (previously `sort.dat()` defined inside `joint()` on every call) is now a file-level internal function, avoiding a spurious S3 method consistency note in R CMD check.
+
+* Fixed copy-paste error in `@param ylab` documentation for `jointplot()` (was labelled "x-axis").
+
+* Renamed variable `t` to `obs_time` in `jointplot()` to avoid shadowing `base::t()`.
+
+* Fixed typo "am Expectation Maximization" → "an" in `DESCRIPTION`.
+
+* Updated test suite: removed deprecated `context()` calls and replaced `expect_is()` with `expect_s3_class()` throughout. Fixed typo "seperate" → "separate" in one test name. Enabled testthat edition 3.
+
+
 # joineR 1.2.8
 
 ## Bugs
@@ -82,7 +145,7 @@ class `joint`.
 
 Fixed an error in the `liver` dataset.
 
-## Maintanence
+## Maintenance
 
 * Updated the documentation for the datasets.
 
@@ -103,7 +166,7 @@ handle the competing risks data.
 * R version 3.4.0 deprecated the recycling of 1x1 matrices, and led to warnings
 being thrown. This is now fixed.
 
-## Maintanence
+## Maintenance
 
 * General code and documentation tidy-up.
 
@@ -121,7 +184,7 @@ of association structures.
 
 * Minor bug fixes to the `joint` and `em.alg` functions.
 
-## Maintanence
+## Maintenance
 
 * Added a `NEWS.md` file to track changes to the package.
 

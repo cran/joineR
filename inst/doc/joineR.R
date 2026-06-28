@@ -1,5 +1,6 @@
 ## ----heart.valve_data---------------------------------------------------------
 library(joineR)
+library(survival)
 data(heart.valve)
 
 ## ----heart.valve_dims---------------------------------------------------------
@@ -43,6 +44,11 @@ table(mental$cens[is.na(mental$Y.t8)])
 ## ----epileptic_data-----------------------------------------------------------
 data(epileptic)
 epileptic[1:3, ]
+
+## ----aids_data----------------------------------------------------------------
+data(aids)
+dim(aids)
+names(aids)
 
 ## ----mental_unbalanced--------------------------------------------------------
 mental.unbalanced <- to.unbalanced(mental, id.col = 1,
@@ -119,8 +125,7 @@ jointplot(heart.jd,
           col1 = "black", col2 = "gray", ylab = "log(lvmi)")
 
 ## ----mental_resids------------------------------------------------------------
-y <- as.matrix(mental[, 2:7]) 
-# converts mental from list format to numeric matrix format
+y <- as.matrix(mental[, 2:7])
 means <- matrix(0, 3, 6)
 
 for (trt in 1:3) {
@@ -178,21 +183,21 @@ model.jointrandom.se <- jointSE(model.jointrandom, n.boot = 100)
 model.jointrandom.se
 
 ## ----liver_jm1, eval=FALSE----------------------------------------------------
-#  model.jointrandom.liver <- joint(
-#    liver.jd,
-#    prothrombin ~ treatment * time + I(time == 0) * treatment,
-#    Surv(survival, cens) ~ treatment,
-#    max.it = 1000)
+# model.jointrandom.liver <- joint(
+#   liver.jd,
+#   prothrombin ~ treatment * time + I(time == 0) * treatment,
+#   Surv(survival, cens) ~ treatment,
+#   max.it = 1000)
 
 ## ----liver_jm2, eval=FALSE----------------------------------------------------
-#  model.jointrandom.liver.sep <- joint(
-#    liver.jd,
-#    prothrombin ~ treatment * time + I(time == 0) * treatment,
-#    Surv(survival, cens) ~ treatment,
-#    sepassoc = TRUE)
+# model.jointrandom.liver.sep <- joint(
+#   liver.jd,
+#   prothrombin ~ treatment * time + I(time == 0) * treatment,
+#   Surv(survival, cens) ~ treatment,
+#   sepassoc = TRUE)
 
 ## ----liver_jm_loglik, eval=FALSE----------------------------------------------
-#  model.jointrandom.liver.sep$loglik$jointlhood - model.jointrandom.liver$loglik$jointlhood
+# model.jointrandom.liver.sep$loglik$jointlhood - model.jointrandom.liver$loglik$jointlhood
 
 ## ----heart.valve_jointdata----------------------------------------------------
 heart.grad <- heart.valve[!is.na(heart.valve$grad), ]
